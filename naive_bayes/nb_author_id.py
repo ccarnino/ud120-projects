@@ -31,14 +31,18 @@ from sklearn.metrics import accuracy_score
 # Train the classifier
 classifier = GaussianNB()
 
-timeBeginTraining = time()
+trainingTimeBegin = time()
 classifier.fit(features_train, labels_train)
-timeEndTraining = time()
+trainingTimeEnd = time()
 
-print "Time required for training: ", round(timeEndTraining - timeBeginTraining, 3), "s"
+print "Time required for training: ", round(trainingTimeEnd - trainingTimeBegin, 3), "s"
 
 # Make predictions on the test set
+predictingTimeStart = time()
 predictions = classifier.predict(features_test)
+
+predictingTimeEnd = time()
+print "Time required for predicting: ", round(predictingTimeEnd - predictingTimeStart, 3), "s"
 
 # Get accuracy
 accuracy = accuracy_score(labels_test, predictions)
