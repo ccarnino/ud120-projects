@@ -28,14 +28,20 @@ plt.show()
 ################################################################################
 
 
-### your code here!  name your classifier object clf if you want the 
+### your code here!  name your classifier object clf if you want the
 ### visualization code (prettyPicture) to show you the decision boundary
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.ensemble import AdaBoostClassifier
 
+# Train the classifier
+clf = AdaBoostClassifier(DecisionTreeClassifier(max_depth=6), n_estimators=600, learning_rate=1)
+clf.fit(features_train, labels_train)
+predictions = clf.predict(features_test)
 
-
-
-
-
+# Get accuracy
+accuracy = accuracy_score(labels_test, predictions)
+print "Accuracty: ", accuracy
 
 
 try:
