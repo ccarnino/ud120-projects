@@ -26,12 +26,13 @@ ages_train, ages_test, net_worths_train, net_worths_test = train_test_split(ages
 ### fill in a regression here!  Name the regression object reg so that
 ### the plotting code below works, and you can see what your regression looks like
 
+from sklearn.linear_model import LinearRegression
 
+reg = LinearRegression()
+reg.fit(ages_train, net_worths_train)
 
-
-
-
-
+print "Slope coefficient: ", reg.coef_
+print "Score: ", reg.score(ages_test, net_worths_test)
 
 
 
@@ -58,7 +59,6 @@ except NameError:
 
 
 
-
 ### only run this code if cleaned_data is returning data
 if len(cleaned_data) > 0:
     ages, net_worths, errors = zip(*cleaned_data)
@@ -78,7 +78,8 @@ if len(cleaned_data) > 0:
     plt.ylabel("net worths")
     plt.show()
 
+    print "Cleaned data slope coefficient: ", reg.coef_
+    print "Cleaned data score: ", reg.score(ages_test, net_worths_test)
 
 else:
     print "outlierCleaner() is returning an empty list, no refitting to be done"
-
