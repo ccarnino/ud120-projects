@@ -122,6 +122,18 @@ kmeans.fit(finance_features)
 pred = kmeans.labels_
 
 
+from sklearn.preprocessing import MinMaxScaler
+
+test_features = [[maxSalary, maxExercisedStockOptions],
+                 [minSalary, minExercisedStockOptions],
+                 [200000, 1000000]]
+
+scaler = MinMaxScaler()
+scaled_test_features = scaler.fit_transform(test_features)
+
+print test_features
+print scaled_test_features
+
 
 
 ### rename the "name" parameter when you change the number of features
