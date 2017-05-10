@@ -39,46 +39,56 @@ def Draw(pred, features, poi, mark_poi=False, name="image.png", f1_name="feature
 
 
 
+## Get min and max exercised stock options
+def getMinMaxExercisedStockOptions(data_dict):
+
+    minStock = sys.maxint
+    maxStock = -sys.maxint-1
+
+    for personName in data_dict:
+        personStock = data_dict[personName]["exercised_stock_options"]
+        if isnan(float(personStock)):
+            continue
+
+        if personStock > maxStock:
+            maxStock = personStock
+
+        if personStock < minStock:
+            minStock = personStock
+
+    return minStock, maxStock
+
+
+## Get the min and max salary
+def getMinMaxSalary(data_dict):
+
+    minSalary = sys.maxint
+    maxSalary = -sys.maxint-1
+
+    for personName in data_dict:
+        personSalary = data_dict[personName]["salary"]
+        if isnan(float(personSalary)):
+            continue
+
+        if personSalary > maxSalary:
+            maxSalary = personSalary
+
+        if personSalary < minSalary:
+            minSalary = personSalary
+
+    return minSalary, maxSalary
+
+
 ### load in the dict of dicts containing all the data on each person in the dataset
 data_dict = pickle.load( open("../final_project/final_project_dataset.pkl", "r") )
+
 ### there's an outlier--remove it!
 data_dict.pop("TOTAL", 0)
 
-
-# Get the min and max exercised_stock_options
-minExercisedStockOptions = sys.maxint
-maxExercisedStockOptions = -sys.maxint-1
-
-for personName in data_dict:
-    personExercisedStockOptions = data_dict[personName]["exercised_stock_options"]
-    if isnan(float(personExercisedStockOptions)):
-        continue
-
-    if personExercisedStockOptions > maxExercisedStockOptions:
-        maxExercisedStockOptions = personExercisedStockOptions
-
-    if personExercisedStockOptions < minExercisedStockOptions:
-        minExercisedStockOptions = personExercisedStockOptions
-
+minExercisedStockOptions, maxExercisedStockOptions = getMinMaxExercisedStockOptions(data_dict)
 print "Exercised stock options: min = ", minExercisedStockOptions, "; max = ", maxExercisedStockOptions
 
-
-
-# Get the min and max salary
-minSalary = sys.maxint
-maxSalary = -sys.maxint-1
-
-for personName in data_dict:
-    personSalary = data_dict[personName]["salary"]
-    if isnan(float(personSalary)):
-        continue
-
-    if personSalary > maxSalary:
-        maxSalary = personSalary
-
-    if personSalary < minSalary:
-        minSalary = personSalary
-
+minSalary, maxSalary = getMinMaxSalary(data_dict)
 print "Salary: min = ", minSalary, "; max = ", maxSalary
 
 
@@ -110,6 +120,7 @@ kmeans = KMeans(n_clusters=2, random_state=0)
 kmeans.fit(finance_features)
 
 pred = kmeans.labels_
+
 
 
 
