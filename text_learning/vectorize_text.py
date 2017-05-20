@@ -4,6 +4,7 @@ import os
 import pickle
 import re
 import sys
+from nltk.stem.snowball import SnowballStemmer
 
 sys.path.append( "../tools/" )
 from parse_out_email_text import parseOutText
@@ -41,21 +42,28 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
     for path in from_person:
         ### only look at first 200 emails when developing
         ### once everything is working, remove this line to run over full dataset
-        temp_counter += 1
-        if temp_counter < 200:
+        # temp_counter += 1
+        # if temp_counter < 200:
             path = os.path.join('..', path[:-1])
             print path
             email = open(path, "r")
 
             ### use parseOutText to extract the text from the opened email
+            stemmed_words = parseOutText(email)
 
             ### use str.replace() to remove any instances of the words
-            ### ["sara", "shackleton", "chris", "germani"]
+            for wordToReplace in ["sara", "shackleton", "chris", "germani"]:
+                stemmed_words = stemmed_words.replace(wordToReplace, "")
 
             ### append the text to word_data
+            if(stemmed_words != ""):
+                word_data.append(stemmed_words)
 
             ### append a 0 to from_data if email is from Sara, and 1 if email is from Chris
-
+            if(name == "sara"):
+                from_data.append(0)
+            else:
+                from_data.append(1)
 
             email.close()
 
@@ -67,9 +75,15 @@ pickle.dump( word_data, open("your_word_data.pkl", "w") )
 pickle.dump( from_data, open("your_email_authors.pkl", "w") )
 
 
-
+print "Word at position 152: ", word_data[152]
 
 
 ### in Part 4, do TfIdf vectorization here
+from sklearn.feature_extraction.text import TfidfVectorizer
 
+vec = TfidfVectorizer(stop_words='english')
+vec.fit_transform(word_data)
+features_names = vec.get_feature_names()
 
+print "Number of unique words: ", len(features_names)
+print "Word at index: ", features_names[34597]
