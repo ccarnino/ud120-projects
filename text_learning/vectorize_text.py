@@ -52,7 +52,7 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
             stemmed_words = parseOutText(email)
 
             ### use str.replace() to remove any instances of the words
-            for wordToReplace in ["sara", "shackleton", "chris", "germani"]:
+            for wordToReplace in ["sara", "shackleton", "chris", "germani", "sshacklensf", "cgermannsf"]:
                 stemmed_words = stemmed_words.replace(wordToReplace, "")
 
             ### append the text to word_data
